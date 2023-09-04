@@ -5,6 +5,16 @@ export function checkLocalStorage(key) {
   return localStorage.getItem(key) !== null
 }
 
+function handleDailyMovements(newMovement, dailyMovements) {
+  const { operation, value } = newMovement
+  const funcObj = {
+    "Transferência": handleOperationOfTypeTransfer,
+    "Saque": handleOperationOfTypeWithdraw,
+    "Deposito": handleOperationOfTypeDeposit
+  }
+  return funcObj[operation](newMovement, dailyMovements)
+}
+
 export function handleStatementUpdate(type, value, operation, balance) {
   const date = new Date();
   const day = String(date.getDate()).padStart(2, '0');
