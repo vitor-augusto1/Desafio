@@ -12,15 +12,48 @@ export function handleStatementUpdate(type, value, operation, balance) {
   const year = date.getFullYear();
   const formatedDate = `${day}/${month}/${year}`;
   let statements = JSON.parse(localStorage.getItem("statement") || "[]");
+  let dailyMovements = JSON.parse(localStorage.getItem("movements") || "{}");
   let newStatement = {
     type: type,
     date: formatedDate,
     value: parseFloat(value),
     operation: operation,
     balance: localStorage.getItem("balance")
+  let newMovement = {
+    operation,
+    value
   }
   statements.push(newStatement);
   localStorage.setItem("statement", JSON.stringify(statements))
+  const movementsObjectLength = Object.keys(dailyMovements).length
+  const thereIsNoMovementsYet = movementsObjectLength === 0
+  if (thereIsNoMovementsYet) {
+    let obj = {}
+    if (operation == "Transferência") {
+      obj = {"transfer": value, "withdraw": 0}
+      newStatement['balance'] = parseFloat(localStorage.getItem("balance")) + parseFloat(value)
+    } else if (operation == "Saque") {
+      obj = {"withdraw": value, "transfer": 0}
+      newStatement['balance'] = parseFloat(localStorage.getItem("balance")) - parseFloat(value)
+    }
+    localStorage.setItem("movements", JSON.stringify(obj))
+    statements.push(newStatement);
+    localStorage.setItem("statement", JSON.stringify(statements))
+    return true
+  } else {
+    const userIsAllowedToExecOperation = handleDailyMovements(newMovement, dailyMovements)
+    if (!userIsAllowedToExecOperation) {
+      return false
+    }
+    if (operation == "Transferência") {
+      newStatement['balance'] = parseFloat(localStorage.getItem("balance")) + parseFloat(value)
+    } else if (operation == "Saque") {
+      newStatement['balance'] = parseFloat(localStorage.getItem("balance")) - parseFloat(value)
+    }
+    statements.push(newStatement);
+    localStorage.setItem("statement", JSON.stringify(statements))
+    return true
+  }
 }
 
 function App() {
