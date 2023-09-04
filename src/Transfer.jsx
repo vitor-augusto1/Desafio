@@ -16,8 +16,11 @@ function Transfer() {
       alert("Não será possivel realizar a transferência pois o valor a ser transferido é superior ao seu saldo.")
       return
     }
+    const canStatementBeUpdated = handleStatementUpdate("Entrada", value, "Transferência", currentBalance);
+    if (!canStatementBeUpdated) {
+      return
+    }
     localStorage.setItem("balance", parseFloat(currentBalance) + parseFloat(value))
-    handleStatementUpdate("Entrada", value, "Transferência", currentBalance);
     window.location.reload();
   };
 

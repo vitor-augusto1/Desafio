@@ -15,8 +15,11 @@ function Withdraw() {
       alert("Não será possivel realizar o saque pois o valor a ser sacado é superior ao seu saldo.")
       return
     }
+    const canStatementBeUpdated = handleStatementUpdate("Saida", value, "Saque", currentBalance);
+    if (!canStatementBeUpdated) {
+      return
+    }
     localStorage.setItem("balance", parseFloat(currentBalance) - parseFloat(value))
-    handleStatementUpdate("Saida", value, "Saque", currentBalance);
     window.location.reload();
   };
 
