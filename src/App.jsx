@@ -61,7 +61,8 @@ export function handleStatementUpdate(type, value, operation, balance) {
     date: formatedDate,
     value: parseFloat(value),
     operation: operation,
-    balance: localStorage.getItem("balance")
+    balance:  parseFloat(localStorage.getItem("balance"))
+  }
   let newMovement = {
     operation,
     value
