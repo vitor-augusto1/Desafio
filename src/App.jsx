@@ -5,6 +5,21 @@ export function checkLocalStorage(key) {
   return localStorage.getItem(key) !== null
 }
 
+function handleOperationOfTypeTransfer(newMovement, dailyMovements) {
+  const { operation, value } = newMovement
+  let todaysTransfer = dailyMovements['transfer']
+  console.log("Today's tranfer: ", todaysTransfer)
+  const transferSum = parseFloat(todaysTransfer) + value
+  if (parseFloat(todaysTransfer) >= 8000 || transferSum > 8000) {
+    alert("Não foi possível realizar a transferência. Limite diário atingido.")
+    return false
+  }
+  const updatedTransfer = parseFloat(todaysTransfer) + value
+  dailyMovements['transfer'] = updatedTransfer
+  localStorage.setItem("movements", JSON.stringify(dailyMovements))
+  return true
+}
+
 function handleDailyMovements(newMovement, dailyMovements) {
   const { operation, value } = newMovement
   const funcObj = {
