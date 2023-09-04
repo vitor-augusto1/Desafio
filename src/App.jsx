@@ -20,6 +20,20 @@ function handleOperationOfTypeTransfer(newMovement, dailyMovements) {
   return true
 }
 
+function handleOperationOfTypeWithdraw(newMovement, dailyMovements) {
+  const { operation, value } = newMovement
+  let todaysWithdraw = dailyMovements['withdraw']
+  const withdrawSum = parseFloat(todaysWithdraw) + value
+  if (parseFloat(todaysWithdraw) >= 5000 || withdrawSum > 5000) {
+    alert("Não foi possível realizar o saque. Limite diário atingido.")
+    return false
+  }
+  const updatedWithdraw = parseFloat(todaysWithdraw) + value
+  dailyMovements['withdraw'] = updatedWithdraw
+  localStorage.setItem("movements", JSON.stringify(dailyMovements))
+  return true
+}
+
 function handleDailyMovements(newMovement, dailyMovements) {
   const { operation, value } = newMovement
   const funcObj = {
