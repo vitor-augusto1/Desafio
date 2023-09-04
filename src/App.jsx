@@ -67,8 +67,6 @@ export function handleStatementUpdate(type, value, operation, balance) {
     operation,
     value
   }
-  statements.push(newStatement);
-  localStorage.setItem("statement", JSON.stringify(statements))
   const movementsObjectLength = Object.keys(dailyMovements).length
   const thereIsNoMovementsYet = movementsObjectLength === 0
   if (thereIsNoMovementsYet) {
@@ -104,9 +102,6 @@ function App() {
   if (!checkLocalStorage("balance")) {
     localStorage.setItem("balance", 10000);
   }
-//  if (!checkLocalStorage("statement")) {
-//    localStorage.setItem("statement", []);
-//  }
   const balance =  localStorage.getItem("balance");
   return (
     <div>
