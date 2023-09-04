@@ -34,6 +34,10 @@ function handleOperationOfTypeWithdraw(newMovement, dailyMovements) {
   return true
 }
 
+function handleOperationOfTypeDeposit(newMovement, dailyMovements) {
+  return true
+}
+
 function handleDailyMovements(newMovement, dailyMovements) {
   const { operation, value } = newMovement
   const funcObj = {
